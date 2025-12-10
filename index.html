@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Lane Hale – Software Developer transitioning to NLP/AI | 27+ years high-performance systems | PyTorch | Hugging Face"/>
+  <meta name="robots" content="index, follow"/>
+  <title>Lane Hale | Software Developer</title>
+  <link rel="canonical" href="https://laneh.dev"/>
+  <style>
+    :root {
+      --bg: #0f1620;
+      --card: #1a2332;
+      --accent: #00dbde;
+      --accent2: #fc00ff;
+      --text: #e0e0e0;
+      --link: #00dbde;
+    }
+    [data-theme="light"] {
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #212529;
+      --link: #007bff;
+    }
+    body { margin:0; padding:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.7; transition:0.3s; }
+    .container { max-width:960px; margin:40px auto; padding:30px; background:var(--card); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.7); text-align:center; }
+    h1 { font-size:3.5rem; margin:0 0 10px; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    h2 { font-size:1.8rem; color:var(--accent); margin:50px 0 20px; }
+    a { color:var(--link); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    .badge { display:inline-block; background:var(--accent); color:#0f1620; padding:10px 24px; margin:10px; border-radius:50px; font-weight:bold; }
+    .btn { display:inline-block; background:var(--accent2); color:white; padding:16px 40px; margin:30px 10px; border-radius:50px; text-decoration:none; font-weight:bold; font-size:1.1rem; }
+    .btn:hover { opacity:0.9; }
+    .section { background:#1e2a3a; padding:40px; margin:40px 0; border-radius:12px; text-align:left; }
+    [data-theme="light"] .section { background:#e9ecef; }
+    ul { padding-left:20px; margin:10px 0; }
+    footer { margin-top:80px; font-size:0.9rem; color:#666; }
+    .toggle { position:fixed; top:20px; right:20px; background:var(--accent2); color:white; padding:10px 16px; border-radius:50px; cursor:pointer; z-index:100; }
+    @media (max-width:640px) { h1{font-size:2.8rem;} .container{margin:20px;padding:20px;} }
+  </style>
+</head>
+<body>
+  <div class="toggle" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'':'light'">Toggle Light/Dark</div>
+
+  <div class="container">
+    <h1>Lane Hale</h1>
+    <p style="font-size:1.4rem;">Software Developer → NLP & AI | 27+ Years High-Performance Transaction Systems</p>
+
+    <div class="badge">PyTorch</div>
+    <div class="badge">Hugging Face</div>
+    <div class="badge">C++</div>
+    <div class="badge">Java</div>
+    <div class="badge">z/TPF Assembler</div>
+    <div class="badge">Available</div>
+
+    <div>
+      <a href="mailto:lanehale1@gmail.com" class="btn">Email Me</a>
+      <a href="/Lane_Hale_Resume_2025.pdf" download class="btn">Download Résumé (PDF)</a>
+    </div>
+
+    <div class="section">
+      <h2>About</h2>
+      <p>27-year veteran of airline reservation systems (Sabre, Travelport, Galileo) transitioning to NLP and AI. Recently completed PyTorch and Hugging Face courses (2025) with live projects achieving 97% accuracy on vision models and 85%+ intent accuracy on a flight-assistant chatbot. Passionate about applying Python, C++, Java, and decades of high-performance, mission-critical application development experience to real-world AI challenges.</p>
+    </div>
+
+    <div class="section">
+      <h2>Featured Projects</h2>
+      <strong>Flight Assistant Chatbot</strong> — <a href="https://github.com/lanehale/airline-chatbot">GitHub</a> | <a href="https://huggingface.co/spaces/lanehale/airline-chatbot">Live Demo</a><br>
+      BERT-based chatbot with FlightAware + Expedia API integration — 1400+ queries, 85% real-world intent accuracy.
+      <br><br>
+      <strong>Food Vision Mini</strong> — <a href="https://github.com/lanehale/pytorch-deep-learning">GitHub</a> | <a href="https://huggingface.co/spaces/lanehale/foodvision_mini">Live Demo</a><br>
+      EfficientNetB2 & ViT-B/16 on Food101 → 97% accuracy.
+      <br><br>
+      <strong>C++ LLA → ECEF Conversion</strong> — <a href="https://github.com/lanehale/cpp-challenges">GitHub</a><br>
+      Precise coordinate math with WGS84 ellipsoid.
+      <br><br>
+      <strong>DevOps Video Redaction</strong> — <a href="https://github.com/lanehale/devops-video-redaction">GitHub</a><br>
+      Docker-Compose + ZeroMQ + OpenCV real-time frame redaction.
+    </div>
+
+    <div class="section">
+      <h2>Core Skills</h2>
+      <p>Python • PyTorch • Hugging Face • C++ • Java • z/TPF Assembler • Prolog • Linux • Docker • Git • REST APIs • CI/CD • Transaction Systems • NLP • MLOps</p>
+    </div>
+
+    <footer>
+      © 2025 Lane Hale • Hosted on Cloudflare Pages • 
+      Views (private): <span id="visits">loading…</span>
+    </footer>
+  </div>
+
+  <!-- Private visitor counter (only you see it) -->
+  <script>
+    // Simple private counter using localStorage (no external service)
+    let visits = localStorage.getItem('lanehVisits') || 0;
+    visits = parseInt(visits) + 1;
+    localStorage.setItem('lanehVisits', visits);
+    document.getElementById('visits').textContent = visits;
+  </script>
+</body>
+</html>
