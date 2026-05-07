@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Lane Hale | Music</title>
+    <style>
+        /* MATCHING YOUR RESUME THEME */
+        :root { --bg: #0f1620; --card: #1a2332; --accent: #00dbde; --accent2: #fc00ff; --text: #e0e0e0; --link: #00dbde; }
+        [data-theme="light"] { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --link: #007bff; }
+        
+        body { margin:0; padding:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.7; transition:0.3s; }
+        .container { max-width:800px; margin:40px auto; padding:30px; background:var(--card); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.7); text-align:center; }
+        h1 { font-size:3rem; margin:0 0 10px; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        
+        /* PLAYER STYLING */
+        .player-box { background:#1e2a3a; padding:30px; border-radius:12px; margin:20px 0; text-align:left; }
+        [data-theme="light"] .player-box { background:#e9ecef; }
+        audio { width: 100%; margin-bottom: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        
+        .track-list { list-style: none; padding: 0; text-align: left; }
+        .track-item { 
+            padding: 15px; 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            cursor: pointer; 
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+        }
+        [data-theme="light"] .track-item { border-bottom: 1px solid rgba(0,0,0,0.1); }
+        .track-item:hover { background: rgba(0,219,222,0.1); color: var(--accent); }
+        
+        .btn-back { display:inline-block; color:var(--link); margin-top:20px; text-decoration:none; font-weight:bold; }
+        .toggle { position:fixed; top:20px; right:20px; background:var(--accent2); color:white; padding:10px 16px; border-radius:50px; cursor:pointer; z-index:100; }
+    </style>
+</head>
+<body>
+    <div class="toggle" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'':'light'">Toggle Light/Dark</div>
+
+    <div class="container">
+        <h1>All We Are</h1>
+        <p>Project Audio Assets</p>
+
+        <div class="player-box">
+            <audio id="main-player" controls>
+                <source id="audio-source" src="" type="audio/wav">
+            </audio>
+
+            <ul class="track-list">
+                <!-- UPDATE THESE URLS WITH YOUR ACTUAL R2 DOMAIN -->
+                <li class="track-item" onclick="playTrack('https://laneh.dev')">
+                    <span>01. Track One Name</span>
+                    <span>WAV</span>
+                </li>
+                <li class="track-item" onclick="playTrack('https://laneh.dev')">
+                    <span>02. Track Two Name</span>
+                    <span>WAV</span>
+                </li>
+            </ul>
+        </div>
+
+        <a href="/" class="btn-back">← Back to Portfolio</a>
+    </div>
+
+    <script>
+        function playTrack(url) {
+            const player = document.getElementById('main-player');
+            const source = document.getElementById('audio-source');
+            source.src = url;
+            player.load();
+            player.play();
+        }
+    </script>
+</body>
+</html>
