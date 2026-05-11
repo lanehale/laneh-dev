@@ -5,84 +5,280 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Lane Hale | Music</title>
     <style>
-        /* MATCHING YOUR RESUME THEME */
         :root { --bg: #0f1620; --card: #1a2332; --accent: #00dbde; --accent2: #fc00ff; --text: #e0e0e0; --link: #00dbde; }
-        [data-theme="light"] { --bg: #f8f9fa; --card: #ffffff; --text: #212529; --link: #007bff; }
-        
+
         body { margin:0; padding:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.7; transition:0.3s; }
-        .container { max-width:800px; margin:40px auto; padding:30px; background:var(--card); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.7); text-align:center; }
         h1 { font-size:3rem; margin:0 0 10px; background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-        
-        /* PLAYER STYLING */
-        .player-box { background:#1e2a3a; padding:30px; border-radius:12px; margin:20px 0; text-align:left; }
-        [data-theme="light"] .player-box { background:#e9ecef; }
-        audio { width: 100%; margin-bottom: 20px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
-        
-        .track-list { list-style: none; padding: 0; text-align: left; }
-        .track-item { 
-            padding: 15px; 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            cursor: pointer; 
-            transition: 0.2s;
-            display: flex;
-            justify-content: space-between;
+
+        .container { max-width:800px; margin:40px auto; padding:30px; background:var(--card); border-radius:16px; box-shadow:0 15px 40px rgba(0,0,0,0.7); text-align:center; }
+        .player-box { background: #1e2a3a; padding: 25px; border-radius: 12px; margin: 20px 0; text-align: left; position: sticky; top: 10px; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        [data-theme="light"] {
+            --bg: #dee2e6;    /* A solid, mid-tone gray (much darker than white) */
+            --card: #eceef0;  /* Slightly lighter gray (removed the mint) */
+            --text: #000000;  /* Pure black makes it look "thicker" */
+            --link: #fc00ff;
         }
-        [data-theme="light"] .track-item { border-bottom: 1px solid rgba(0,0,0,0.1); }
+        [data-theme="light"] .player-box {
+            background: #e4e6e8; /* 3% darker than the card for an 'inset' look (or #e0e2e4 5% darker) */
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        [data-theme="light"] .track-item {
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        [data-theme="light"] .track-item:hover {
+            background: rgba(0,219,222,0.1);
+            color: #000000 !important;
+        }
+        [data-theme="light"] .play-album-btn:hover {
+            color: #000000 !important;
+        }
+        audio { width: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+        .track-list { list-style: none; padding: 0; text-align: left; margin-top: 20px; }
+        .track-item { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.2s; display: flex; justify-content: space-between; }
         .track-item:hover { background: rgba(0,219,222,0.1); color: var(--accent); }
-        
-        .btn-back { display:inline-block; color:var(--link); margin-top:20px; text-decoration:none; font-weight:bold; }
-        .toggle { position:fixed; top:20px; right:20px; background:var(--accent2); color:white; padding:10px 16px; border-radius:50px; cursor:pointer; z-index:100; }
+        .active-track { background: rgba(0,219,222,0.15); color: var(--accent); font-weight: bold; border-left: 4px solid var(--accent); }
+        .play-album-btn { 
+            /* This creates the gradient from Cyan to Purple */
+            background: linear-gradient(90deg, var(--accent), var(--accent2) 120%);
+            color: #0f1620; /* Keep it black or use white if you prefer */
+            border: none; 
+            padding: 8px 18px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+            font-weight: bold; 
+            margin-left: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,219,222,0.3);
+        }
+        .play-album-btn:hover { 
+            /* The Reverse Gradient: Pink starts on the left, Cyan on the right */
+            background: linear-gradient(90deg, var(--accent2), var(--accent) 120%);
+            color: #ffffff; /* Switched to white on hover so it pops against the pink */
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(252,0,255,0.4);
+        }
+        .toggle { position:fixed; top:20px; right:20px; background:var(--accent2); color:white; padding:10px 16px; border-radius:50px; cursor:pointer; z-index:1100; }
+        /* Add this to highlight the playing song */
+        .active-track { 
+            background: rgba(0,219,222,0.15); 
+            color: var(--accent); 
+            font-weight: bold; 
+            border-left: 4px solid var(--accent); 
+        }
+        /* Adds a triangle before every track name */
+        .track-item span:first-child::before {
+            content: "▶ ";
+            font-size: 0.7rem;
+            margin-right: 10px;
+            opacity: 0.5;
+        }
+        .player-label {
+            font-size: 0.7rem;
+            color: var(--accent2); /* Matching the purple/pink badge */
+            font-weight: 400 !important; /* Forces it to be thin */
+        }
     </style>
 </head>
 <body>
-    <div class="toggle" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'':'light'">Toggle Light/Dark</div>
 
-    <div class="container">
-        <h1>The Lance Palmer Project</h1>
-        <p>Project Audio Assets</p>
+<div class="toggle" onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='light'?'':'light'">Toggle Light/Dark</div>
 
-        <div class="player-box">
-            <audio id="main-player" controls>
-                <source id="audio-source" src="" type="audio/wav">
-            </audio>
+<div class="container">
+    <h1>The Lance Palmer Project</h1>
+    <p>Lossless Audio Archive</p>
 
-            <!-- ALBUM 1 SECTION -->
-            <h2 style="color: var(--accent); font-size: 1.2rem; margin-top: 20px;">All We Are (Album)</h2>
-            <ul class="track-list">
-                <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/1-All_We_Are.wav')">
-                    <span>01. All We Are</span>
-                    <span>WAV</span>
-                </li>
-                <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/2-Next_Level.wav')">
-                    <span>02. Next Song Name</span>
-                    <span>WAV</span>
-                </li>
-                <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/3-The_Swiftest_Hours.wav')">
-                    <span>03. The Swiftest Hours</span>
-                    <span>WAV</span>
-                </li>
-                <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/4-Soft_Lines.wav')">
-                    <span>04. Soft Lines</span>
-                    <span>WAV</span>
-                </li>
-                <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/5-Off_the_Hook.wav')">
-                    <span>05. Off the Hook</span>
-                    <span>WAV</span>
-                </li>
-            </ul>
+    <!-- STICKY PLAYER -->
+    <div class="player-box">
+        <div style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+            <span id="now-playing" style="font-size: 0.9rem; color: var(--accent); font-weight: bold;">SELECT A TRACK</span>
+            <span id="continuous-badge" class="player-label" style="display: none;">CONTINUOUS PLAY ON</span>
         </div>
-
-        <a href="/" class="btn-back">← Back to Portfolio</a>
+        <audio id="main-player" controls>
+            <source id="audio-source" src="" type="audio/wav">
+        </audio>
     </div>
 
-    <script>
-        function playTrack(url) {
-            const player = document.getElementById('main-player');
-            const source = document.getElementById('audio-source');
-            source.src = url;
-            player.load();
-            player.play();
+    <!-- ALBUM SECTION -->
+    <div style="text-align: left; margin-top: 40px;">
+        <!-- Album 1 -->
+        <h2 style="display: inline-block; color: var(--accent); font-size: 1.5rem;">All We Are</h2>
+        <button class="play-album-btn" onclick="playAlbum('album1')">▶ Play Album</button>
+
+        <ul class="track-list" id="album1">
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/1-All_We_Are.wav', this, 'All We Are')">
+                <span>01. All We Are</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/2-Next_Level.wav', this, 'Next Level')">
+                <span>02. Next Level</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/3-The_Swiftest_Hours.wav', this, 'The Swiftest Hours')">
+                <span>03. The Swiftest Hours</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/4-Soft_Lines.wav', this, 'Soft Lines')">
+                <span>04. Soft Lines</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/All_We_Are/5-Off_the_Hook.wav', this, 'Off the Hook')">
+                <span>05. Off the Hook</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+        </ul>
+
+        <!-- Album 2 -->
+        <h2 style="display: inline-block; color: var(--accent); font-size: 1.5rem;">Halfway There</h2>
+        <button class="play-album-btn" onclick="playAlbum('album2')">▶ Play Album</button>
+
+        <ul class="track-list" id="album2">
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/1-Thin_Air.wav', this, 'Thin Air')">
+                <span>01. Thin Air</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/2-Halfway_There.wav', this, 'Halfway There')">
+                <span>02. Halfway There</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/3-Intuit.wav', this, 'Intuit')">
+                <span>03. Intuit</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/4-Goodbye.wav', this, 'Goodbye')">
+                <span>04. Goodbye</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/5-New_Stuff.wav', this, 'New Stuff')">
+                <span>05. New Stuff</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Halfway_There/6-Apparent_Wind.wav', this, 'Apparent Wind')">
+                <span>06. Apparent Wind</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+        </ul>
+
+        <!-- Album 3 -->
+        <h2 style="display: inline-block; color: var(--accent); font-size: 1.5rem;">Tuning In</h2>
+        <button class="play-album-btn" onclick="playAlbum('album3')">▶ Play Album</button>
+
+        <ul class="track-list" id="album3">
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Tuning_In/1-Warm_Up.wav', this, 'Warm Up')">
+                <span>01. Warm Up</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Tuning_In/2-Tuning_In.wav', this, 'Tuning In')">
+                <span>02. Tuning In</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" data-delay="1" onclick="playTrack('https://music.laneh.dev/Tuning_In/3-A_Quiet_Kind.wav', this, 'A Quiet Kind')">
+                <span>03. A Quiet Kind</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" data-delay="2" onclick="playTrack('https://music.laneh.dev/Tuning_In/4-Playing_with_Fire.wav', this, 'Playing with Fire')">
+                <span>04. Playing with Fire</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+            <li class="track-item" onclick="playTrack('https://music.laneh.dev/Tuning_In/5-Kick_the_Can.wav', this, 'Kick the Can')">
+                <span>05. Kick the Can</span>
+                <span style="opacity: 0.5; font-family: monospace;">[WAV]</span>
+            </li>
+        </ul>
+    </div>
+
+    <a href="#" style="display: block; margin-top: 60px; color: var(--link); text-decoration: none;">↑ Scroll to Top</a>
+</div>
+
+<script>
+const player = document.getElementById('main-player');
+const source = document.getElementById('audio-source');
+const statusText = document.getElementById('now-playing');
+const continuousBadge = document.getElementById('continuous-badge');
+let isContinuous = false;
+
+function playTrack(url, element, name, isAuto = false) {
+    document.querySelectorAll('.track-item').forEach(li => li.classList.remove('active-track'));
+    element.classList.add('active-track');
+    
+    statusText.innerHTML = `
+        <span class="player-label">NOW PLAYING :</span> 
+        <span style="font-size: 0.9rem; font-weight: bold; margin-left: 0px; color: var(--accent); text-transform: uppercase;">
+            ${name}
+        </span>`;
+
+    if (!isAuto) {
+        isContinuous = false;
+        continuousBadge.style.display = 'none';
+    }
+    
+    source.src = url;
+    player.load();
+    player.play();
+}
+
+function playAlbum(albumId) {
+    isContinuous = true;
+    continuousBadge.style.display = 'inline';
+    const firstTrack = document.querySelector(`#${albumId} .track-item`);
+    if (firstTrack) {
+        firstTrack.click();
+        isContinuous = true;
+        continuousBadge.style.display = 'inline';
+    }
+}
+
+player.onended = function() {
+    if (isContinuous) {
+        const active = document.querySelector('.active-track');
+        let next = active ? active.nextElementSibling : null;
+
+        while (next && !next.classList.contains('track-item')) {
+            next = next.nextElementSibling;
         }
-    </script>
+
+        if (next) {
+            // Add 1 to account for the silent start in the WAV file
+            let trackDelay = (parseInt(active.getAttribute('data-delay')) || 0) + 1;
+
+            if (trackDelay > 0) {
+                let timeLeft = trackDelay;
+                statusText.innerHTML = `<span class="player-label">UP NEXT IN ${timeLeft}s...</span>`;
+
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        statusText.innerHTML = `<span class="player-label">UP NEXT IN ${timeLeft}s...</span>`;
+                    } else {
+                        clearInterval(countdown);
+                        if (isContinuous) {
+                            next.click();
+                            isContinuous = true;
+                            continuousBadge.style.display = 'inline';
+                        }
+                    }
+                }, 1000);
+            } else {
+                next.click();
+                isContinuous = true;
+                continuousBadge.style.display = 'inline';
+            }
+        } else {
+            finishSession();
+        }
+    } else {
+        finishSession();
+    }
+};
+
+function finishSession() {
+    isContinuous = false;
+    continuousBadge.style.display = 'none';
+    statusText.textContent = "SELECT A TRACK";
+    document.querySelectorAll('.track-item').forEach(li => li.classList.remove('active-track'));
+}
+</script>
+
 </body>
 </html>
